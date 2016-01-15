@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
+  get 'exotel/book'
+
   get 'home/index'
   post 'home/update'
+
+  get '/book', to: 'exotel#book'
 
   devise_for :users, :controllers => { :omniauth_callbacks => 'users/omniauth_callbacks'}
   # The priority is based upon order of creation: first created -> highest priority.

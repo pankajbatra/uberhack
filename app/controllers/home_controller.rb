@@ -12,9 +12,5 @@ class HomeController < ApplicationController
     current_user.save!
   end
 
-  def book
-
-  end
-
 
 end

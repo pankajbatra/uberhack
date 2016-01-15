@@ -43,3 +43,5 @@ gem 'passenger'
 gem 'rest-client'
 
 gem 'daemons'
+
+gem 'uber-ruby', require: 'uber'
