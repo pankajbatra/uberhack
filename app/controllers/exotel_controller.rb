@@ -12,6 +12,13 @@ class ExotelController < ApplicationController
     end
     request =  client.trip_request ({:start_place_id=>'home'})
     puts request.request_id
+
+    end_point = 'https://sparselabs:058a1148e19fd0a0515573a72bf3800f6a55a9fd@twilix.exotel.in/v1/Accounts/sparselabs/Sms/send'
+    response = RestClient.post end_point, {
+                                            :From => '01139586000',
+                                            :To => user.mobile,
+                                            :Body => 'Your cab has been booked',
+                                            :Priority => 'high'}
     # puts client.products(latitude: 77, longitude: 122)
 
     # end_point = 'https://api.uber.com/v1/requests'
