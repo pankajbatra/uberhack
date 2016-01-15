@@ -11,4 +11,10 @@ class HomeController < ApplicationController
     current_user.office= params[:office]
     current_user.save!
   end
+
+  def book
+
+  end
+
+
 end
