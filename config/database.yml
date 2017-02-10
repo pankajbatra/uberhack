@@ -26,3 +26,6 @@ test:
 
 production:
   <<: *default
+  username: uber_test
+  password: uber12345Kq
+  host: uber-test.c1wkfvotbklc.ap-south-1.rds.amazonaws.com
