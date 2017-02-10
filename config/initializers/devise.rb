@@ -238,7 +238,7 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-  config.omniauth :uber, 'JuhHrgX5zqLavT0mhFzUzdycOmZ3xa6d', 'axQczhej2NFXxGQkX2JpwcBKRn0mPgOlGsdcsf2w', scope: 'profile history'
+  config.omniauth :uber, 'JuhHrgX5zqLavT0mhFzUzdycOmZ3xa6d', '3bKwkooaAl9-TOOZI_Kbp-1UwHoiBsD_8vRSkB6w', scope: 'profile history'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
