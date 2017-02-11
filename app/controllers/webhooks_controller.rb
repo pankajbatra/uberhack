@@ -40,7 +40,7 @@ class WebhooksController < ApplicationController
   require 'json'
   def send_gcm_notification(options)
     gcm = GCM.new('AIzaSyA3Tgz7ndYtDc5GW8JOO9F-Yiuws445CLI')
-    response = gcm.send('APA91bFZlqjbQebOxmMbWgtPY7Q_Y01YbXwaAesYj3KfUJWIqe6_8pbiBRYaBZtn3FUh-abX_ZMWf0zCf2A1Gd7St3b2I1qlAE3Ey9I0kzCY5S1vjoXQAKmzlMgXIRzV0pjNeh661Db4',
+    response = gcm.send(['APA91bFZlqjbQebOxmMbWgtPY7Q_Y01YbXwaAesYj3KfUJWIqe6_8pbiBRYaBZtn3FUh-abX_ZMWf0zCf2A1Gd7St3b2I1qlAE3Ey9I0kzCY5S1vjoXQAKmzlMgXIRzV0pjNeh661Db4'],
                         options)
     Rails.logger.info "Sent notification with options: #{options}, response: #{response}"
   end
