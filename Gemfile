@@ -40,6 +40,10 @@ gem 'oauth2'
 gem 'omniauth'
 gem 'omniauth-uber'
 
+gem 'gcm', '~> 0.1.1'
+
+gem 'geokit-rails'
+
 gem 'passenger'
 
 gem 'daemons'

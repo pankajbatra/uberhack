@@ -10,9 +10,9 @@ class WebhooksController < ApplicationController
       Rails.logger.warn "Time: #{params[:event_time]}"
       user = User.find_by_uid(params[:meta][:user_id])
       Rails.logger.warn "User: #{user.email}"
-      if params[:meta][:status]=='in_progress'
+      # if params[:meta][:status]=='in_progress'
         response_str = RestClient.get 'https://sandbox-api.uber.com/v1.2/requests/current',
-                                  {:Authorization => user.token}
+                                  {:Authorization => "Bearer #{user.token}"}
         response = JSON.parse(response_str.to_str,:symbolize_names => true)
         # curl -H 'Authorization: Bearer <TOKEN>'
         # client = Uber::Client.new do |config|
@@ -23,19 +23,25 @@ class WebhooksController < ApplicationController
         # end
         # response = client.trip_details params[:meta][:resource_id]
         Rails.logger.warn response_str.to_str
-        # Rails.logger.warn "Driver: #{response.driver.name} - #{response.driver.phone_number}"
-        # Rails.logger.warn "Vehicle: #{response.vehicle.make} - #{response.vehicle.model} - #{response.vehicle.license_plate}"
-        # Rails.logger.warn "Location: #{response.location.latitude} - #{response.location.longitude}"
-      end
+        Rails.logger.warn "Driver: #{response[:driver][:name]} - #{response[:driver][:phone_number]}"
+        Rails.logger.warn "Pickup: #{response[:pickup][:latitude]} - #{response[:pickup][:longitude]}"
+        Rails.logger.warn "Destination: #{response[:destination][:latitude]} - #{response[:destination][:longitude]}"
+        Rails.logger.warn "vehicle: #{response[:vehicle][:make]} - #{response[:vehicle][:model]} - #{response[:vehicle][:license_plate]}"
+        bounds = Geokit::Bounds.from_point_and_radius([response[:destination][:latitude], response[:destination][:longitude]], 5)
+      url = "https://www.zomato.com/ncr/restaurants?range=#{bounds.ne.lat},#{bounds.ne.lng},#{bounds.sw.lat},#{bounds.sw.lng}"
+        Rails.logger.warn url
+        options = {data: {msgType: 'uberUpdate', url: url}, collapse_key: 'misc'}
+        send_gcm_notification(options)
+      # end
     end
+  end
 
-    # {"event_id"=>"45729879-1dbc-4ada-98bc-0d03b09676f3", "resource_href"=>"https://sandbox-api.uber.com/v1/requests/b6d01242-265d-4de2-98c1-5c14116fd6ad",
-    #  "meta"=>{"status"=>"in_progress", "user_id"=>"86a76e36-df07-4034-bf1b-b96e4afa6509", "resource_id"=>"b6d01242-265d-4de2-98c1-5c14116fd6ad"},
-    #  "event_type"=>"all_trips.status_changed", "event_time"=>1486799913,
-    #  "webhook"=>{"event_id"=>"45729879-1dbc-4ada-98bc-0d03b09676f3",
-    #  "resource_href"=>"https://sandbox-api.uber.com/v1/requests/b6d01242-265d-4de2-98c1-5c14116fd6ad",
-    #  "meta"=>{"status"=>"in_progress", "user_id"=>"86a76e36-df07-4034-bf1b-b96e4afa6509", "resource_id"=>"b6d01242-265d-4de2-98c1-5c14116fd6ad"},
-    #  "event_type"=>"all_trips.status_changed", "event_time"=>1486799913}
-    # }
+  require 'gcm'
+  require 'json'
+  def send_gcm_notification(options)
+    gcm = GCM.new('AIzaSyA3Tgz7ndYtDc5GW8JOO9F-Yiuws445CLI')
+    response = gcm.send('APA91bFZlqjbQebOxmMbWgtPY7Q_Y01YbXwaAesYj3KfUJWIqe6_8pbiBRYaBZtn3FUh-abX_ZMWf0zCf2A1Gd7St3b2I1qlAE3Ey9I0kzCY5S1vjoXQAKmzlMgXIRzV0pjNeh661Db4',
+                        options)
+    Rails.logger.info "Sent notification with options: #{options}, response: #{response}"
   end
 end
