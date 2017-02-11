@@ -23,11 +23,12 @@ class WebhooksController < ApplicationController
         # end
         # response = client.trip_details params[:meta][:resource_id]
         Rails.logger.warn response_str.to_str
-        Rails.logger.warn "Driver: #{response[:driver][:name]} - #{response[:driver][:phone_number]}"
+        if params[:meta][:status]=='accepted'
+          Rails.logger.warn "Driver: #{response[:driver][:name]} - #{response[:driver][:phone_number]}"
+          Rails.logger.warn "vehicle: #{response[:vehicle][:make]} - #{response[:vehicle][:model]} - #{response[:vehicle][:license_plate]}"
+        end
         Rails.logger.warn "Pickup: #{response[:pickup][:latitude]} - #{response[:pickup][:longitude]}"
         Rails.logger.warn "Destination: #{response[:destination][:latitude]} - #{response[:destination][:longitude]}"
-        Rails.logger.warn "vehicle: #{response[:vehicle][:make]} - #{response[:vehicle][:model]} - #{response[:vehicle][:license_plate]}"
-        bounds = Geokit::Bounds.from_point_and_radius([response[:destination][:latitude], response[:destination][:longitude]], 5)
         url = "https://www.zomato.com/index.php?near-me=#{response[:destination][:latitude]},#{response[:destination][:longitude]},1"
         Rails.logger.warn url
         options = {data: {msgType: 'uberUpdate', url: url}, collapse_key: 'misc'}
