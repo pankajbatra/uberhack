@@ -28,7 +28,7 @@ class WebhooksController < ApplicationController
         Rails.logger.warn "Destination: #{response[:destination][:latitude]} - #{response[:destination][:longitude]}"
         Rails.logger.warn "vehicle: #{response[:vehicle][:make]} - #{response[:vehicle][:model]} - #{response[:vehicle][:license_plate]}"
         bounds = Geokit::Bounds.from_point_and_radius([response[:destination][:latitude], response[:destination][:longitude]], 5)
-      url = "https://www.zomato.com/ncr/restaurants?range=#{bounds.ne.lat},#{bounds.ne.lng},#{bounds.sw.lat},#{bounds.sw.lng}"
+        url = "https://www.zomato.com/index.php?near-me=#{response[:destination][:latitude]},#{response[:destination][:longitude]},1"
         Rails.logger.warn url
         options = {data: {msgType: 'uberUpdate', url: url}, collapse_key: 'misc'}
         send_gcm_notification(options)
