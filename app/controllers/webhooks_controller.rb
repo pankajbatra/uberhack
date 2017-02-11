@@ -13,7 +13,7 @@ class WebhooksController < ApplicationController
       if params[:meta][:status]=='in_progress'
         response_str = RestClient.get 'https://sandbox-api.uber.com/v1.2/requests/current',
                                   {:Authorization => user.token}
-        response = JSON.parse(response.to_str,:symbolize_names => true)
+        response = JSON.parse(response_str.to_str,:symbolize_names => true)
         # curl -H 'Authorization: Bearer <TOKEN>'
         # client = Uber::Client.new do |config|
         #   config.server_token  = 'axQczhej2NFXxGQkX2JpwcBKRn0mPgOlGsdcsf2w'
@@ -22,7 +22,7 @@ class WebhooksController < ApplicationController
         #   config.sandbox       = true
         # end
         # response = client.trip_details params[:meta][:resource_id]
-        Rails.logger.warn response_str
+        Rails.logger.warn response_str.to_str
         # Rails.logger.warn "Driver: #{response.driver.name} - #{response.driver.phone_number}"
         # Rails.logger.warn "Vehicle: #{response.vehicle.make} - #{response.vehicle.model} - #{response.vehicle.license_plate}"
         # Rails.logger.warn "Location: #{response.location.latitude} - #{response.location.longitude}"
