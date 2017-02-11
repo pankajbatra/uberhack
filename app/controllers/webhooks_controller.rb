@@ -11,7 +11,7 @@ class WebhooksController < ApplicationController
       user = User.find_by_uid(params[:meta][:user_id])
       Rails.logger.warn "User: #{user.email}"
       if params[:meta][:status]=='in_progress' || params[:meta][:status]=='accepted'
-        response_str = RestClient.get 'https://sandbox-api.uber.com/v1.2/requests/current',
+        response_str = RestClient.get 'https://api.uber.com/v1.2/requests/current',
                                   {:Authorization => "Bearer #{user.token}"}
         response = JSON.parse(response_str.to_str,:symbolize_names => true)
         # curl -H 'Authorization: Bearer <TOKEN>'
