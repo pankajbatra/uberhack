@@ -14,14 +14,6 @@ class WebhooksController < ApplicationController
         response_str = RestClient.get 'https://api.uber.com/v1.2/requests/current',
                                   {:Authorization => "Bearer #{user.token}"}
         response = JSON.parse(response_str.to_str,:symbolize_names => true)
-        # curl -H 'Authorization: Bearer <TOKEN>'
-        # client = Uber::Client.new do |config|
-        #   config.server_token  = 'axQczhej2NFXxGQkX2JpwcBKRn0mPgOlGsdcsf2w'
-        #   config.client_id     = 'JuhHrgX5zqLavT0mhFzUzdycOmZ3xa6d'
-        #   config.client_secret = '3bKwkooaAl9-TOOZI_Kbp-1UwHoiBsD_8vRSkB6w'
-        #   config.sandbox       = true
-        # end
-        # response = client.trip_details params[:meta][:resource_id]
         Rails.logger.warn response_str.to_str
         if params[:meta][:status]=='accepted'
           Rails.logger.warn "Driver: #{response[:driver][:name]} - #{response[:driver][:phone_number]}"
